@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>三一工学院 夜间用电异常排名</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="header">
+            <div class="header-left">
+                <h1 class="title">夜间用电异常排名</h1>
+                <div class="tabs">
+                    <div class="tab active" data-view="rank">排名榜</div>
+                    <div class="tab" data-view="overview">概览</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="date-picker">
+                    <label for="night-date">日期:</label>
+                    <input type="date" id="night-date">
+                    <button id="load-btn">查询</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 排名视图 -->
+        <div class="view active" id="rank-view">
+            <div class="rank-toolbar">
+                <div class="filter-group">
+                    <label for="building-select">楼栋:</label>
+                    <select id="building-select">
+                        <option value="全部">全部</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>显示:</label>
+                    <div class="ratio-buttons" id="ratio-buttons">
+                        <button class="ratio-btn active" data-ratio="10">前10%</button>
+                        <button class="ratio-btn" data-ratio="20">前20%</button>
+                        <button class="ratio-btn" data-ratio="50">前50%</button>
+                        <button class="ratio-btn" data-ratio="100">全部</button>
+                    </div>
+                    <div class="custom-ratio">
+                        <input type="number" id="custom-ratio" min="1" max="100" placeholder="自定义%">
+                        <button id="set-custom-ratio">确定</button>
+                    </div>
+                </div>
+                <div class="filter-group exclude-group" id="exclude-group">
+                    <label>排除楼栋:</label>
+                    <div class="exclude-tags" id="exclude-tags"></div>
+                    <button class="reset-exclude-btn" id="reset-exclude">重置默认</button>
+                </div>
+                <div class="stats-bar" id="rank-stats"></div>
+            </div>
+            <div class="rank-list" id="rank-list">
+                <div class="loading">请选择日期后点击查询</div>
+            </div>
+        </div>
+
+        <!-- 详情视图 -->
+        <div class="view" id="detail-view">
+            <div class="detail-header">
+                <button class="back-btn" id="back-btn">< 返回排名</button>
+                <div class="device-info" id="device-info"></div>
+            </div>
+            <div class="chart-container">
+                <canvas id="usage-chart"></canvas>
+            </div>
+            <div class="history-table-container">
+                <h3>历史记录</h3>
+                <table class="history-table" id="history-table">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>23-00</th>
+                            <th>00-01</th>
+                            <th>01-02</th>
+                            <th>02-03</th>
+                            <th>03-04</th>
+                            <th>04-05</th>
+                            <th>05-06</th>
+                            <th>评分</th>
+                            <th>排名</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 概览视图 -->
+        <div class="view" id="overview-view">
+            <div class="overview-cards" id="overview-cards"></div>
+            <div class="building-section">
+                <h3>楼栋统计</h3>
+                <div class="building-list" id="building-list"></div>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <div class="footer">
+            <p>项目源码: <a href="https://github.com/xmb505/SANY_ELE_RANK" target="_blank">GitHub仓库</a></p>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="chart.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

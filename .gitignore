@@ -5,6 +5,10 @@ doc/SECRECT/
 server/config/*.ini
 !server/config/example_*.ini
 
+# 前端配置文件（含敏感信息）
+web/config.js
+!web/example_config.js
+
 # Python
 __pycache__/
 *.pyc
