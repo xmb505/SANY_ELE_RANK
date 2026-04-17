@@ -1,0 +1,10 @@
+# 隐私文件
+doc/SECRECT/
+
+# 配置文件（含敏感信息）
+server/config/*.ini
+!server/config/example_*.ini
+
+# Python
+__pycache__/
+*.pyc
