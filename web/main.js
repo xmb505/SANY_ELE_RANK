@@ -441,6 +441,48 @@ async function loadBuildings() {
     }
 }
 
+// ========== 主题切换 ==========
+
+function getStoredTheme() {
+    const stored = localStorage.getItem('theme');
+    if (stored) return stored;
+    // 自动探测浏览器偏好
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+    }
+    return 'light';
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const icon = document.getElementById('theme-icon');
+    if (icon) {
+        icon.textContent = theme === 'dark' ? '\u2600\uFE0F' : '\uD83C\uDF19';
+    }
+    // 根据主题选择对应背景图
+    const bgUrl = theme === 'dark' ? CONFIG.BG_DARK : CONFIG.BG_LIGHT;
+    if (bgUrl) {
+        document.body.style.backgroundImage = `url(${bgUrl})`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundAttachment = 'fixed';
+    } else {
+        document.body.style.backgroundImage = '';
+    }
+}
+
+function initTheme() {
+    const theme = getStoredTheme();
+    applyTheme(theme);
+
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('theme', next);
+        applyTheme(next);
+    });
+}
+
 // ========== 初始化 ==========
 
 function initApp() {
@@ -547,12 +589,13 @@ function initApp() {
 // 启动
 document.addEventListener('DOMContentLoaded', () => {
     loadConfig().then(() => {
-        if (CONFIG.BG_URL) {
-            document.body.style.backgroundImage = `url(${CONFIG.BG_URL})`;
-            document.body.style.backgroundSize = 'cover';
-            document.body.style.backgroundPosition = 'center';
-            document.body.style.backgroundAttachment = 'fixed';
+        // 设置 favicon
+        if (CONFIG.AVATAR_URL) {
+            const favicon = document.getElementById('favicon');
+            if (favicon) favicon.href = CONFIG.AVATAR_URL;
         }
+        // 初始化主题（含背景图逻辑）
+        initTheme();
         initApp();
     });
 });

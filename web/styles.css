@@ -1,3 +1,45 @@
+/* ===== 主题变量 ===== */
+:root {
+    --bg-color: #f0f2f5;
+    --container-bg: #fff;
+    --card-bg: #fafafa;
+    --card-hover-bg: #f0f2f5;
+    --text-primary: #333;
+    --text-secondary: #666;
+    --text-muted: #888;
+    --text-faint: #999;
+    --border-color: #d9d9d9;
+    --divider-color: #f0f0f0;
+    --input-bg: #fff;
+    --container-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    --bar-bg: #f0f0f0;
+    --table-header-bg: #fafafa;
+    --exclude-tag-bg: #fff;
+    --exclude-active-bg: #fff2f0;
+    --exclude-active-border: #ffccc7;
+}
+
+[data-theme="dark"] {
+    --bg-color: #0d1117;
+    --container-bg: #161b22;
+    --card-bg: #21262d;
+    --card-hover-bg: #30363d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #8b949e;
+    --text-faint: #6e7681;
+    --border-color: #30363d;
+    --divider-color: #21262d;
+    --input-bg: #0d1117;
+    --container-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    --bar-bg: #30363d;
+    --table-header-bg: #21262d;
+    --exclude-tag-bg: #21262d;
+    --exclude-active-bg: #3d1f1f;
+    --exclude-active-border: #6e3030;
+}
+
+/* ===== 基础 ===== */
 * {
     margin: 0;
     padding: 0;
@@ -6,31 +48,34 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: #f0f2f5;
-    color: #333;
+    background: var(--bg-color);
+    color: var(--text-primary);
     min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
 }
 
 .container {
     max-width: 960px;
     margin: 20px auto;
     padding: 20px;
-    background: #fff;
+    background: var(--container-bg);
     border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    box-shadow: var(--container-shadow);
+    transition: background 0.3s, box-shadow 0.3s;
 }
 
-/* 顶部导航 */
+/* ===== 顶部导航 ===== */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #fafafa;
+    background: var(--card-bg);
     padding: 12px 20px;
     border-radius: 8px;
     margin-bottom: 16px;
     flex-wrap: wrap;
     gap: 10px;
+    transition: background 0.3s;
 }
 
 .header-left {
@@ -56,11 +101,11 @@ body {
     cursor: pointer;
     font-size: 14px;
     transition: all 0.2s;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .tab:hover {
-    background: #f0f2f5;
+    background: var(--card-hover-bg);
 }
 
 .tab.active {
@@ -71,6 +116,33 @@ body {
 .header-right {
     display: flex;
     align-items: center;
+    gap: 8px;
+}
+
+/* 主题切换按钮 */
+.theme-toggle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: var(--input-bg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+    border-color: #1677ff;
+    background: var(--card-hover-bg);
+}
+
+.theme-icon {
+    font-size: 18px;
+    line-height: 1;
+    transition: transform 0.3s;
 }
 
 .date-picker {
@@ -81,15 +153,18 @@ body {
 
 .date-picker label {
     font-size: 14px;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .date-picker input[type="date"] {
     padding: 5px 10px;
-    border: 1px solid #d9d9d9;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     font-size: 14px;
     outline: none;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    transition: all 0.3s;
 }
 
 .date-picker input[type="date"]:focus {
@@ -111,7 +186,7 @@ body {
     background: #4096ff;
 }
 
-/* 视图切换 */
+/* ===== 视图切换 ===== */
 .view {
     display: none;
 }
@@ -120,7 +195,7 @@ body {
     display: block;
 }
 
-/* 排名工具栏 */
+/* ===== 排名工具栏 ===== */
 .rank-toolbar {
     display: flex;
     justify-content: space-between;
@@ -138,15 +213,18 @@ body {
 
 .filter-group label {
     font-size: 14px;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .filter-group select {
     padding: 5px 10px;
-    border: 1px solid #d9d9d9;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     font-size: 14px;
     outline: none;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    transition: all 0.3s;
 }
 
 .ratio-buttons {
@@ -156,9 +234,10 @@ body {
 
 .ratio-btn {
     padding: 4px 12px;
-    border: 1px solid #d9d9d9;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
-    background: #fff;
+    background: var(--input-bg);
+    color: var(--text-primary);
     cursor: pointer;
     font-size: 13px;
     transition: all 0.2s;
@@ -185,10 +264,13 @@ body {
 .custom-ratio input {
     width: 70px;
     padding: 4px 8px;
-    border: 1px solid #d9d9d9;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     font-size: 13px;
     outline: none;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    transition: all 0.3s;
 }
 
 .custom-ratio input:focus {
@@ -197,11 +279,13 @@ body {
 
 .custom-ratio button {
     padding: 4px 10px;
-    border: 1px solid #d9d9d9;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
-    background: #fff;
+    background: var(--input-bg);
+    color: var(--text-primary);
     cursor: pointer;
     font-size: 13px;
+    transition: all 0.2s;
 }
 
 .custom-ratio button:hover {
@@ -211,10 +295,10 @@ body {
 
 .stats-bar {
     font-size: 13px;
-    color: #888;
+    color: var(--text-muted);
 }
 
-/* 排名卡片 */
+/* ===== 排名卡片 ===== */
 .rank-list {
     display: flex;
     flex-direction: column;
@@ -224,7 +308,7 @@ body {
 .rank-card {
     display: flex;
     align-items: center;
-    background: #fafafa;
+    background: var(--card-bg);
     padding: 12px 16px;
     border-radius: 8px;
     cursor: pointer;
@@ -233,7 +317,7 @@ body {
 }
 
 .rank-card:hover {
-    background: #f0f2f5;
+    background: var(--card-hover-bg);
 }
 
 .rank-number {
@@ -263,7 +347,7 @@ body {
 
 .rank-site {
     font-size: 12px;
-    color: #999;
+    color: var(--text-faint);
     margin-top: 2px;
 }
 
@@ -306,19 +390,21 @@ body {
 .rank-stable.stable { color: #52c41a; }
 .rank-stable.unstable { color: #bbb; }
 
-/* 详情视图 */
+/* ===== 详情视图 ===== */
 .detail-header {
     margin-bottom: 16px;
 }
 
 .back-btn {
     padding: 6px 16px;
-    border: 1px solid #d9d9d9;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
-    background: #fff;
+    background: var(--input-bg);
+    color: var(--text-primary);
     cursor: pointer;
     font-size: 14px;
     margin-bottom: 12px;
+    transition: all 0.2s;
 }
 
 .back-btn:hover {
@@ -327,9 +413,10 @@ body {
 }
 
 .device-info {
-    background: #fafafa;
+    background: var(--card-bg);
     padding: 16px;
     border-radius: 8px;
+    transition: background 0.3s;
 }
 
 .device-info h2 {
@@ -339,14 +426,15 @@ body {
 
 .device-info p {
     font-size: 13px;
-    color: #888;
+    color: var(--text-muted);
 }
 
 .chart-container {
-    background: #fafafa;
+    background: var(--card-bg);
     padding: 16px;
     border-radius: 8px;
     margin-bottom: 16px;
+    transition: background 0.3s;
 }
 
 .chart-container canvas {
@@ -355,9 +443,10 @@ body {
 }
 
 .history-table-container {
-    background: #fafafa;
+    background: var(--card-bg);
     padding: 16px;
     border-radius: 8px;
+    transition: background 0.3s;
 }
 
 .history-table-container h3 {
@@ -374,16 +463,16 @@ body {
 .history-table th, .history-table td {
     padding: 8px 6px;
     text-align: center;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--divider-color);
 }
 
 .history-table th {
     font-weight: 500;
-    color: #888;
-    background: #fafafa;
+    color: var(--text-muted);
+    background: var(--table-header-bg);
 }
 
-/* 概览视图 */
+/* ===== 概览视图 ===== */
 .overview-cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -392,10 +481,11 @@ body {
 }
 
 .overview-card {
-    background: #fafafa;
+    background: var(--card-bg);
     padding: 16px;
     border-radius: 8px;
     text-align: center;
+    transition: background 0.3s;
 }
 
 .overview-card .card-value {
@@ -411,13 +501,14 @@ body {
 
 .overview-card .card-label {
     font-size: 13px;
-    color: #888;
+    color: var(--text-muted);
 }
 
 .building-section {
-    background: #fafafa;
+    background: var(--card-bg);
     padding: 16px;
     border-radius: 8px;
+    transition: background 0.3s;
 }
 
 .building-section h3 {
@@ -437,7 +528,7 @@ body {
     gap: 12px;
     padding: 8px 12px;
     border-radius: 6px;
-    background: #fafafa;
+    background: var(--card-bg);
 }
 
 .building-name {
@@ -450,7 +541,7 @@ body {
 .building-bar-container {
     flex: 1;
     height: 20px;
-    background: #f0f0f0;
+    background: var(--bar-bg);
     border-radius: 4px;
     overflow: hidden;
 }
@@ -463,13 +554,13 @@ body {
 
 .building-stats-text {
     font-size: 12px;
-    color: #888;
+    color: var(--text-muted);
     width: 160px;
     text-align: right;
     flex-shrink: 0;
 }
 
-/* 排除楼栋标签 */
+/* ===== 排除楼栋标签 ===== */
 .exclude-group {
     flex-basis: 100%;
     flex-wrap: wrap;
@@ -486,12 +577,12 @@ body {
     align-items: center;
     padding: 3px 10px;
     border-radius: 12px;
-    border: 1px solid #d9d9d9;
+    border: 1px solid var(--border-color);
     font-size: 12px;
     cursor: pointer;
     transition: all 0.2s;
-    background: #fff;
-    color: #333;
+    background: var(--exclude-tag-bg);
+    color: var(--text-primary);
     user-select: none;
 }
 
@@ -500,10 +591,10 @@ body {
 }
 
 .exclude-tag.excluded {
-    background: #fff2f0;
-    color: #999;
+    background: var(--exclude-active-bg);
+    color: var(--text-faint);
     text-decoration: line-through;
-    border-color: #ffccc7;
+    border-color: var(--exclude-active-border);
 }
 
 .exclude-tag.excluded:hover {
@@ -512,12 +603,12 @@ body {
 
 .reset-exclude-btn {
     padding: 3px 10px;
-    border: 1px solid #d9d9d9;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
-    background: #fff;
+    background: var(--input-bg);
+    color: var(--text-secondary);
     cursor: pointer;
     font-size: 12px;
-    color: #666;
     transition: all 0.2s;
     white-space: nowrap;
 }
@@ -527,19 +618,19 @@ body {
     color: #1677ff;
 }
 
-/* 加载中 & 空状态 */
+/* ===== 加载中 & 空状态 ===== */
 .loading, .empty {
     text-align: center;
     padding: 40px;
-    color: #999;
+    color: var(--text-faint);
     font-size: 14px;
 }
 
-/* 页脚 */
+/* ===== 页脚 ===== */
 .footer {
     text-align: center;
     padding: 20px;
-    color: #999;
+    color: var(--text-faint);
     font-size: 12px;
 }
 
@@ -552,7 +643,7 @@ body {
     text-decoration: underline;
 }
 
-/* 响应式 */
+/* ===== 响应式 ===== */
 @media (max-width: 640px) {
     .header {
         flex-direction: column;

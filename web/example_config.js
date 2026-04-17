@@ -13,5 +13,9 @@ window.DYNAMIC_CONFIG = {
     PAGE_SIZE: 20,
 
     // 背景图片URL（留空则使用默认纯色背景）
-    BG_URL: 'https://shared.fastly.steamstatic.com/community_assets/images/items/1584090/3244c9d1ef9bfdaf84b60c825c81851c4208622f.jpg'
+    BG_LIGHT: '',
+    BG_DARK: '',
+
+    // 网站头像/favicon URL
+    AVATAR_URL: 'https://littleskin.cn/avatar/112989?size=128'
 };
