@@ -547,6 +547,12 @@ function initApp() {
 // 启动
 document.addEventListener('DOMContentLoaded', () => {
     loadConfig().then(() => {
+        if (CONFIG.BG_URL) {
+            document.body.style.backgroundImage = `url(${CONFIG.BG_URL})`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+            document.body.style.backgroundAttachment = 'fixed';
+        }
         initApp();
     });
 });
