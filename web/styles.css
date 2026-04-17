@@ -13,8 +13,11 @@ body {
 
 .container {
     max-width: 960px;
-    margin: 0 auto;
-    padding: 16px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
 /* 顶部导航 */
@@ -22,10 +25,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #fff;
+    background: #fafafa;
     padding: 12px 20px;
     border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     margin-bottom: 16px;
     flex-wrap: wrap;
     gap: 10px;
@@ -222,17 +224,16 @@ body {
 .rank-card {
     display: flex;
     align-items: center;
-    background: #fff;
+    background: #fafafa;
     padding: 12px 16px;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     cursor: pointer;
-    transition: box-shadow 0.2s;
+    transition: background 0.2s;
     gap: 16px;
 }
 
 .rank-card:hover {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    background: #f0f2f5;
 }
 
 .rank-number {
@@ -326,10 +327,9 @@ body {
 }
 
 .device-info {
-    background: #fff;
+    background: #fafafa;
     padding: 16px;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
 .device-info h2 {
@@ -343,10 +343,9 @@ body {
 }
 
 .chart-container {
-    background: #fff;
+    background: #fafafa;
     padding: 16px;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     margin-bottom: 16px;
 }
 
@@ -356,10 +355,9 @@ body {
 }
 
 .history-table-container {
-    background: #fff;
+    background: #fafafa;
     padding: 16px;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
 .history-table-container h3 {
@@ -394,10 +392,9 @@ body {
 }
 
 .overview-card {
-    background: #fff;
+    background: #fafafa;
     padding: 16px;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     text-align: center;
 }
 
@@ -418,10 +415,9 @@ body {
 }
 
 .building-section {
-    background: #fff;
+    background: #fafafa;
     padding: 16px;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
 .building-section h3 {
