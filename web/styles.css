@@ -618,6 +618,57 @@ body {
     color: #1677ff;
 }
 
+/* ===== 联动AI视图 ===== */
+.ai-prompt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.ai-prompt-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    flex: 1;
+}
+
+.copy-btn {
+    padding: 6px 20px;
+    background: #1677ff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.copy-btn:hover {
+    background: #4096ff;
+}
+
+.ai-prompt-box {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 16px;
+    transition: background 0.3s;
+}
+
+.ai-prompt-box pre {
+    font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin: 0;
+    user-select: all;
+}
+
 /* ===== 加载中 & 空状态 ===== */
 .loading, .empty {
     text-align: center;
@@ -630,8 +681,16 @@ body {
 .footer {
     text-align: center;
     padding: 20px;
+    margin-top: 20px;
+    background: var(--card-bg);
+    border-radius: 8px;
     color: var(--text-faint);
     font-size: 12px;
+    transition: background 0.3s;
+}
+
+.footer p {
+    margin: 5px 0;
 }
 
 .footer a {

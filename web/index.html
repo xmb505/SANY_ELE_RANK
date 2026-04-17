@@ -19,6 +19,7 @@
                 <div class="tabs">
                     <div class="tab active" data-view="rank">排名榜</div>
                     <div class="tab" data-view="overview">概览</div>
+                    <div class="tab" data-view="ai">联动AI</div>
                 </div>
             </div>
             <div class="header-right">
@@ -107,9 +108,22 @@
             </div>
         </div>
 
+        <!-- 联动AI视图 -->
+        <div class="view" id="ai-view">
+            <div class="ai-prompt-header">
+                <p class="ai-prompt-desc">根据当前排名数据生成 AI 分析提示词，复制后粘贴到 ChatGPT / DeepSeek 等工具中使用</p>
+                <button class="copy-btn" id="copy-prompt">复制提示词</button>
+            </div>
+            <div class="ai-prompt-box">
+                <pre id="ai-prompt-text">请先查询数据后切换到此页面</pre>
+            </div>
+        </div>
+
         <!-- 页脚 -->
         <div class="footer">
             <p>项目源码: <a href="https://github.com/xmb505/SANY_ELE_RANK" target="_blank">GitHub仓库</a></p>
+            <p>个人博客: <a href="https://blog.xmb505.top" target="_blank">新毛博客</a></p>
+            <p><a href="https://icp.gov.moe/?keyword=20240505" target="_blank">萌ICP备20240505号</a> | <a href="https://beian.miit.gov.cn/" target="_blank">湘ICP备2024053841号</a></p>
         </div>
     </div>
 

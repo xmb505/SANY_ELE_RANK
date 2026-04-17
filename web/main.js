@@ -7,6 +7,9 @@ let currentChart = null;
 let excludedBuildings = [];
 let defaultExclude = [];
 let allBuildings = [];
+let lastRankRows = null;
+let lastRankStats = null;
+let lastRankMeta = null;
 
 // 获取API地址
 function getApiUrl() {
@@ -162,6 +165,11 @@ async function fetchRankData(nightDate, building, ratio) {
 
         renderRankCards(data.rows);
         renderStats(data.stats, data.showing, data.total, ratio);
+
+        // 缓存数据供联动AI使用
+        lastRankRows = data.rows;
+        lastRankStats = data.stats;
+        lastRankMeta = { showing: data.showing, total: data.total, ratio, nightDate, building };
     } catch (error) {
         handleError(error, '获取排名数据');
         document.getElementById('rank-list').innerHTML = '<div class="empty">加载失败，请检查后端服务</div>';
@@ -441,6 +449,61 @@ async function loadBuildings() {
     }
 }
 
+// ========== 联动AI ==========
+
+function generateAIPrompt() {
+    const el = document.getElementById('ai-prompt-text');
+    if (!lastRankRows || lastRankRows.length === 0) {
+        el.textContent = '请先查询数据后切换到此页面';
+        return;
+    }
+
+    const meta = lastRankMeta;
+    const stats = lastRankStats;
+    const dateRange = formatNightDateRange(meta.nightDate);
+    const buildingText = meta.building === '全部' ? '全部楼栋' : meta.building;
+    const excludeText = (excludedBuildings.length > 0 && meta.building === '全部')
+        ? `，已排除: ${excludedBuildings.join('、')}`
+        : '';
+
+    let prompt = `你是一个校园电费检查复核员，我们需要你复核学生晚上突发用电问题，请你找出其中用电异常寝室。\n\n`;
+    prompt += `以下是 ${meta.nightDate} 夜间（${dateRange}）的用电排名数据（筛选: ${buildingText}，显示前${meta.ratio}%，共${meta.showing}/${meta.total}台${excludeText}）：\n\n`;
+    prompt += `统计摘要：平均分 ${stats.avg_score} | 最高分 ${stats.max_score} | >=60分(异常) ${stats.count_ge60}台 | >=30分(可疑) ${stats.count_ge30}台\n\n`;
+    prompt += `排名 | 设备名 | 安装位置 | 23-00 | 00-01 | 01-02 | 02-03 | 03-04 | 04-05 | 05-06 | 评分 | 数据质量\n`;
+    prompt += `--- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---\n`;
+
+    lastRankRows.forEach(r => {
+        const stable = r.stable_data ? '高' : '低';
+        prompt += `${r.score_rank} | ${r.equipmentName} | ${r.installationSite} | `;
+        prompt += `${r.n1_use_ele.toFixed(2)} | ${r.n2_use_ele.toFixed(2)} | ${r.n3_use_ele.toFixed(2)} | `;
+        prompt += `${r.n4_use_ele.toFixed(2)} | ${r.n5_use_ele.toFixed(2)} | ${r.n6_use_ele.toFixed(2)} | `;
+        prompt += `${r.n7_use_ele.toFixed(2)} | ${r.ele_score.toFixed(1)} | ${stable}\n`;
+    });
+
+    el.textContent = prompt;
+}
+
+function copyAIPrompt() {
+    const text = document.getElementById('ai-prompt-text').textContent;
+    if (!text || text === '请先查询数据后切换到此页面') return;
+
+    const btn = document.getElementById('copy-prompt');
+    navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = '已复制';
+        setTimeout(() => { btn.textContent = '复制提示词'; }, 2000);
+    }).catch(() => {
+        // fallback
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        btn.textContent = '已复制';
+        setTimeout(() => { btn.textContent = '复制提示词'; }, 2000);
+    });
+}
+
 // ========== 主题切换 ==========
 
 function getStoredTheme() {
@@ -506,6 +569,11 @@ function initApp() {
             fetchRankData(currentNightDate, currentBuilding, currentRatio);
         } else if (activeView === 'overview') {
             fetchOverviewData(currentNightDate);
+        } else if (activeView === 'ai') {
+            // AI页面查询时先拉取排名数据再生成提示词
+            fetchRankData(currentNightDate, currentBuilding, currentRatio).then(() => {
+                generateAIPrompt();
+            });
         }
     });
 
@@ -520,7 +588,11 @@ function initApp() {
                     fetchRankData(currentNightDate, currentBuilding, currentRatio);
                 } else if (viewName === 'overview') {
                     fetchOverviewData(currentNightDate);
+                } else if (viewName === 'ai') {
+                    generateAIPrompt();
                 }
+            } else if (viewName === 'ai') {
+                generateAIPrompt();
             }
         });
     });
@@ -581,6 +653,9 @@ function initApp() {
     document.getElementById('back-btn').addEventListener('click', () => {
         showView('rank');
     });
+
+    // 复制提示词按钮
+    document.getElementById('copy-prompt').addEventListener('click', copyAIPrompt);
 
     // 加载楼栋列表
     loadBuildings();
