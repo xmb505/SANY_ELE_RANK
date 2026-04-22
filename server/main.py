@@ -173,6 +173,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
+    HTTPServer.allow_reuse_address = True
     server = HTTPServer(('', SERVER_PORT), RequestHandler)
     print(f"SANY_ELE_RANK 服务器启动，监听端口 {SERVER_PORT}")
     server.serve_forever()

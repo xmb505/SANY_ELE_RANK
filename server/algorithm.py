@@ -6,6 +6,7 @@ SANY_ELE_RANK 数据预处理与评分算法模块
 """
 
 import configparser
+import math
 import os
 from datetime import datetime, timedelta
 
@@ -17,6 +18,8 @@ _config.read(os.path.join(os.path.dirname(__file__), 'config', 'algorithm.ini'))
 TARGET_HOUR_OFFSETS = [int(x.strip()) for x in _config.get('time', 'target_hour_offsets').split(',')]
 ALIGN_THRESHOLD_SEC = int(_config.get('time', 'align_threshold_sec'))
 SCORE_MULTIPLIER = float(_config.get('score', 'score_multiplier'))
+SCORE_METHOD = _config.get('score', 'score_method', fallback='spike').strip().lower()
+RISING_EDGE_MU_FLOOR = float(_config.get('score', 'rising_edge_mu_floor', fallback='0.1'))
 DEVICE_NAME_PATTERN = _config.get('filter', 'device_name_pattern')
 _exclude_raw = _config.get('filter', 'exclude_buildings', fallback='')
 EXCLUDE_BUILDINGS = [b.strip() for b in _exclude_raw.split(',') if b.strip()]
@@ -183,8 +186,32 @@ def calculate_spikes(x):
     return spikes
 
 
-def calculate_score(x):
-    """计算异常能源使用分数（0~100）"""
+def _calculate_score_spike(x):
+    """评分算法A：邻居突出度（spike）"""
     spikes = calculate_spikes(x)
     s = sum(spikes)
     return min(100.0, s * SCORE_MULTIPLIER)
+
+
+def _calculate_score_rising_edge(x):
+    """
+    评分算法B：上升沿检测（rising_edge）
+    聚焦相邻时段的正向增量，归一化后平方和，指数饱和映射到 0~100。
+    """
+    mu = sum(x) / len(x)
+    mu = max(mu, RISING_EDGE_MU_FLOOR)
+
+    s = 0.0
+    for i in range(len(x) - 1):
+        r = max(0.0, x[i + 1] - x[i])
+        s += (r / mu) ** 2
+
+    return 100.0 * (1.0 - math.exp(-s))
+
+
+def calculate_score(x):
+    """根据配置选择评分算法"""
+    if SCORE_METHOD == 'rising_edge':
+        return _calculate_score_rising_edge(x)
+    else:
+        return _calculate_score_spike(x)
